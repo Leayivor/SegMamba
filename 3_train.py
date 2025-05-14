@@ -19,7 +19,7 @@ model_save_path = os.path.join(logdir, "model")
 augmentation = True
 
 env = "pytorch"
-max_epoch = 1000
+max_epoch = 5
 batch_size = 2
 val_every = 2
 num_gpus = 1

@@ -1,17 +1,26 @@
-
-from light_training.preprocessing.preprocessors.preprocessor_mri import MultiModalityPreprocessor 
-import numpy as np 
-import pickle 
 import json 
+import pickle 
+import argparse
+import numpy as np 
+from light_training.preprocessing.preprocessors.preprocessor_mri import MultiModalityPreprocessor 
 
-data_filename = ["t2w.nii.gz",
-                 "t2f.nii.gz",
-                 "t1n.nii.gz",
-                 "t1c.nii.gz"]
+data_filename = ["t2.nii.gz",
+                 "flair.nii.gz",
+                 "t1.nii.gz",
+                 "t1ce.nii.gz"]
+                 
 seg_filename = "seg.nii.gz"
 
-base_dir = "./data/raw_data/BraTS2023/"
-image_dir = "ASNR-MICCAI-BraTS2023-GLI-Challenge-TrainingData"
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--base_dir", type=str, default="", required=True)
+    parser.add_argument("--image_dir", type=str, default="TrainingData", required=True)
+    return parser.parse_args()
+
+args = parse_args()
+
+base_dir = args.base_dir
+image_dir = args.image_dir
 
 def process_train():
     preprocessor = MultiModalityPreprocessor(base_dir=base_dir, 
