@@ -49,7 +49,7 @@ class MedicalDataset(Dataset):
             unpack_dataset(f, 
                         unpack_segmentation=True,
                         overwrite_existing=False,
-                        num_processes=8)
+                        num_processes=2)
 
 
         print(f"data length is {len(self.datalist)}")

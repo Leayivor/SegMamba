@@ -11,16 +11,20 @@ from monai.losses.dice import DiceLoss
 set_determinism(123)
 import os
 
-data_dir = "./data/fullres/train"
-logdir = f"./logs/segmamba"
+
+os.makedirs("logs/segmamba", exist_ok=True) 
+os.makedirs("data/fullres/train", exist_ok=True) 
+
+data_dir = "data/fullres/train"
+logdir = "logs/segmamba"
 
 model_save_path = os.path.join(logdir, "model")
 # augmentation = "nomirror"
 augmentation = True
 
 env = "pytorch"
-max_epoch = 5
-batch_size = 2
+max_epoch = 15
+batch_size = 1
 val_every = 2
 num_gpus = 2
 device = "cuda:0"
@@ -47,7 +51,7 @@ class BraTSTrainer(Trainer):
         self.best_mean_dice = 0.0
         self.ce = nn.CrossEntropyLoss() 
         self.mse = nn.MSELoss()
-        self.train_process = 18
+        self.train_process = 4
         self.optimizer = torch.optim.SGD(self.model.parameters(), lr=1e-2, weight_decay=3e-5,
                                     momentum=0.99, nesterov=True)
         
