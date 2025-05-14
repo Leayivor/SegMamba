@@ -22,9 +22,9 @@ env = "pytorch"
 max_epoch = 5
 batch_size = 2
 val_every = 2
-num_gpus = 1
+num_gpus = 2
 device = "cuda:0"
-roi_size = [128, 128, 128]
+roi_size = [128, 128, 96]
 
 def func(m, epochs):
     return np.exp(-10*(1- m / epochs)**2)
