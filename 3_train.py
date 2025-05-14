@@ -23,12 +23,12 @@ model_save_path = os.path.join(logdir, "model")
 augmentation = True
 
 env = "pytorch"
-max_epoch = 15
+max_epoch = 50
 batch_size = 1
 val_every = 2
 num_gpus = 2
 device = "cuda:0"
-roi_size = [128, 128, 96]
+roi_size = [128, 128, 128]
 
 def func(m, epochs):
     return np.exp(-10*(1- m / epochs)**2)
