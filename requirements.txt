@@ -1,4 +1,4 @@
 medpy
 monai
-batchgenerators
 acvl_utils
+batchgenerators
