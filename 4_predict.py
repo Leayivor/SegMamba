@@ -1,17 +1,23 @@
-import numpy as np
-from light_training.dataloading.dataset import get_train_val_test_loader_from_train
+import os
 import torch 
+import argparse
+import numpy as np
 import torch.nn as nn 
+from monai.utils import set_determinism
+from light_training.trainer import Trainer
+from light_training.prediction import Predictor
 from monai.inferers import SlidingWindowInferer
 from light_training.evaluation.metric import dice
-from light_training.trainer import Trainer
-from monai.utils import set_determinism
-from light_training.evaluation.metric import dice
-set_determinism(123)
-import os
-from light_training.prediction import Predictor
+from light_training.dataloading.dataset import get_train_val_test_loader_from_train
 
-data_dir = "./data/fullres/train"
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--data_dir", type=str, required=True)
+parser.add_argument("--save_dir", type=str, required=True)
+args = parser.parse_args()
+
+set_determinism(123)
+data_dir = args.data_dir
 env = "pytorch"
 max_epoch = 1000
 batch_size = 2
@@ -48,7 +54,7 @@ class BraTSTrainer(Trainer):
                         depths=[2,2,2,2],
                         feat_size=[48, 96, 192, 384])
         
-        model_path = "/home/xingzhaohu/dev/jiuding_code/brats23/logs/segmamba/model/final_model_0.9038.pt"
+        model_path = "logs/segmamba/model/final_model_0.9038.pt"
         new_sd = self.filte_state_dict(torch.load(model_path, map_location="cpu"))
         model.load_state_dict(new_sd)
         model.eval()
@@ -61,7 +67,7 @@ class BraTSTrainer(Trainer):
         predictor = Predictor(window_infer=window_infer,
                               mirror_axes=[0,1,2])
 
-        save_path = "./prediction_results/segmamba"
+        save_path = args.save_dir
         os.makedirs(save_path, exist_ok=True)
 
         return model, predictor, save_path
